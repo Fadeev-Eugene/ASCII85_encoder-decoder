@@ -10,21 +10,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install C++ and Python dependencies
+    - name: Install dependencies
       run: |
         sudo apt-get update
-        # Базовые инструменты для C++ и Make
-        sudo apt-get install -y build-essential make cmake
-        # Зависимости для Google Test
-        sudo apt-get install -y libgtest-dev
-        # Python и тестовые зависимости
-        sudo apt-get install -y python3 python3-pip
-        # Сборка Google Test
-        cd /usr/src/gtest
+        # Основные зависимости
+        sudo apt-get install -y build-essential make cmake python3 python3-pip
+        # Установка Google Test
+        sudo apt-get install -y libgtest-dev googletest
+        # Сборка и установка GTest
+        cd /usr/src/googletest
         sudo cmake CMakeLists.txt
         sudo make
-        sudo cp *.a /usr/lib
-        # Установка Python-зависимостей (если нужны)
+        sudo make install
+        # Python зависимости
         python3 -m pip install pytest
 
     - name: Build project
